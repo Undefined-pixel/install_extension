@@ -23,11 +23,16 @@ failed_extensions=()
 for extension in "${extensions[@]}"; do
     echo "Installing: $extension"
     output=$(code --install-extension "$extension" 2>&1)
+    exit_code=$?
     
-    # Check if error or "Error" appears in output
-    if echo "$output" | grep -qi "error\|failed"; then
+    # There was an error if:
+    # 1. Exit code is non-zero, OR
+    # 2. Output contains "Error", "failed", or "Failed"
+    if [ $exit_code -ne 0 ] || echo "$output" | grep -iE "error|failed" > /dev/null; then
         echo "✗ Failed to install: $extension"
-        echo "  Details: $output"
+        if [ ! -z "$output" ]; then
+            echo "  Output: $output"
+        fi
         failed_extensions+=("$extension")
     else
         echo "✓ Successfully installed: $extension"
