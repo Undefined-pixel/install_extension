@@ -19,22 +19,38 @@ extensions=(
 )
 
 # Install each extension
+failed_extensions=()
 for extension in "${extensions[@]}"; do
     echo "Installing: $extension"
-    code --install-extension "$extension"
-    if [ $? -eq 0 ]; then
-        echo "✓ Successfully installed: $extension"
-    else
+    output=$(code --install-extension "$extension" 2>&1)
+    
+    # Check if error or "Error" appears in output
+    if echo "$output" | grep -qi "error\|failed"; then
         echo "✗ Failed to install: $extension"
-        exit 1
+        echo "  Details: $output"
+        failed_extensions+=("$extension")
+    else
+        echo "✓ Successfully installed: $extension"
     fi
     echo ""
 done
 
 echo "================================="
-echo "All extensions installed successfully!"
-echo ""
-echo "Installed extensions:"
-for extension in "${extensions[@]}"; do
-    echo "  - $extension"
-done
+
+if [ ${#failed_extensions[@]} -eq 0 ]; then
+    echo "All extensions installed successfully!"
+    echo ""
+    echo "Installed extensions:"
+    for extension in "${extensions[@]}"; do
+        echo "  - $extension"
+    done
+    exit 0
+else
+    echo "Installation completed with errors!"
+    echo ""
+    echo "Failed extensions:"
+    for extension in "${failed_extensions[@]}"; do
+        echo "  - $extension"
+    done
+    exit 1
+fi
