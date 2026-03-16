@@ -19,14 +19,14 @@ Bash script to install three Python-related VS Code extensions.
 
 ## Usage
 
-### Method 1: Direct download and execute with wget
+### Method 1: Direct download and execute with curl
 ```bash
-wget -qO- https://git.hub.vwgroup.com/v2cqddc/mac_ext_cas/raw/main/install_extensions.sh | bash
+curl https://raw.githubusercontent.com/Undefined-pixel/install_extension/main/install_extensions.sh | bash
 ```
 
-### Method 2: Direct download and execute with curl
+### Method 2: Direct download and execute with wget
 ```bash
-curl -s https://git.hub.vwgroup.com/v2cqddc/mac_ext_cas/raw/main/install_extensions.sh | bash
+wget -qO- https://raw.githubusercontent.com/Undefined-pixel/install_extension/main/install_extensions.sh | bash
 ```
 
 ### Method 3: Run from the script location
@@ -74,5 +74,3 @@ Installed extensions:
 - **Command not found**: Ensure the `code` command is installed in your PATH
 - **Permission denied**: Run `chmod +x install_extensions.sh` to make it executable
 - **Installation fails**: Check your internet connection and VS Code is not running in restricted mode
-# mac_ext_cas
-# install_extension
